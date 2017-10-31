@@ -907,6 +907,13 @@ INSERT INTO public."CampusDirectory"(
 ('College Hall 101','413-585-4920','Class Deans Office','https://www.smith.edu/class-deans-office','','Christina Kuralt','ckuralt@smith.edu','Christina',704414,'Kuralt','','ckuralt@smith.edu','Staff','Christina','Office Manager_Class Deans Office'),
 ('Gill Hall','413-585-3270','Campus School','https://www.smith.edu/campus-school','','Susan Kurian','skurian@smith.edu','Susan',542848,'Kurian','','skurian@smith.edu','Faculty Staff','Susan','Teacher of Instrumental Music_Campus School'),
 ('','','Campus School','https://www.smith.edu/campus-school','','Caroline Kushner','ckushner@smith.edu','Caroline',1053979,'Kushner','','ckushner@smith.edu','Staff','Caroline','Teacher''s Aide_Campus School'),
+
+
+
+
+
+
+
 ('126 West Street','413-585-2418','Facilities Management','https://www.smith.edu/facilities-management','','Stephen Kzcowski','skzcowsk@smith.edu','Stephen',0,'Kzcowski','','skzcowsk@smith.edu','Staff','Stephen','Custodian_Facilities Management'),
 ('Young Library','413-585-2908','Libraries','https://www.smith.edu/libraries','','Michele La Fleur','mlafleur@smith.edu','Michele',918455,'La Fleur','','mlafleur@smith.edu','Staff','Michele','Night Circulation Supervisor_Libraries'),
 ('126 West Street','413-585-2490','Campus Police','https://www.smith.edu/campus-police','','Raymond LaBarre','rlabarre@smith.edu','Raymond',935444,'LaBarre','','rlabarre@smith.edu','Staff','Raymond','Interim Chief_Campus Police'),
@@ -1336,6 +1343,13 @@ INSERT INTO public."CampusDirectory"(
 ('Lilly Hall','413-585-7986','School for Social Work','https://www.smith.edu/ssw','','Cailyn Reed','cmreed@smith.edu','Cailyn',1070605,'Reed','','cmreed@smith.edu','Staff','Cailyn','Finance & Operations Manager_School for Social Work'),
 ('','','English Language and Literature','https://www.smith.edu/english-language-and-literature','','Charles (prefer: Eric) Reeves','ereeves@smith.edu','Charles',172229,'Reeves','','ereeves@smith.edu','Faculty','Eric','Professor Emeritus of English Language and Literature_English Language and Literature'),
 ('Alumnae House','413-585-2063','Development','https://www.smith.edu/development','','Barbara Rejniak','brejniak@smith.edu','Barbara',181077,'Rejniak','','brejniak@smith.edu','Staff','Barbara','Senior Assistant Director_Development'),
+
+
+
+
+
+
+
 ('McConnell Hall 009','413-585-3540','Clark Sci Ctr Administration','https://www.smith.edu/clark-sci-ctr-administration','','Dale Renfrow','drenfrow@smith.edu','Dale',921187,'Renfrow','','drenfrow@smith.edu','Staff','Dale','Instructor & Machinist Technic_Clark Sci Ctr Administration'),
 ('','','Psychology','https://www.smith.edu/psychology','','Donald (prefer: Don) Reutener','dreutene@smith.edu','Donald',223565,'Reutener','','dreutene@smith.edu','Faculty','Don','Professor Emeritus of Psychology_Psychology'),
 ('','','Global Studies Center','https://www.smith.edu/global-studies-center','','Guido Reverdito','','Guido',1197168,'Reverdito','','Guido_Reverdito@NoEmail.com','Staff','',''),
