@@ -73,6 +73,7 @@ var ajax =$.ajax({
             	count++;
             	console.log(feature.properties.first_name == "Barbara");
             	// if(feature.properties.first_name == "Lori"){
+            		console.log(feature.properties.display_name);
                 popupOptions = {maxWidth: 500};
                 
                 layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address,
