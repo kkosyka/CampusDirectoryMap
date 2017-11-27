@@ -17,7 +17,7 @@
 -- );
 
 -- Insert values into table
-INSERT INTO public."CampusDirectory"(
+INSERT INTO public.CampusDirectory1(
 	campus_address, campus_extension, dept_agg, dept_url_agg, display_class_year, display_name, email, first_name, image_id, last_name, mailbox, node_indentifier, person_type_agg, pref_first, title_dept)
 	VALUES
 ('Ford Hall, Rm 103','413-585-3857','Biological Sciences','https://www.smith.edu/biological-sciences','','Brian Abrams','babrams@smith.edu','Brian',1247835,'Abrams','','babrams@smith.edu','Staff','Brian','Research Associate_Biological Sciences'),
@@ -563,6 +563,10 @@ INSERT INTO public."CampusDirectory"(
 ('Hatfield Hall 309','413-585-3357','French Studies','https://www.smith.edu/french-studies','','Martine Gantrel-Ford','mgantrel@smith.edu','Martine',65589,'Gantrel-Ford','','mgantrel@smith.edu','Faculty','Martine','Professor_French Studies'),
 ('','','School for Social Work','https://www.smith.edu/ssw','Class of 2024','Jacob (prefer: Zev) Ganz','zganz@smith.edu','Jacob',1136217,'Ganz','','zganz@smith.edu','Student Faculty','Zev','Doctoral Program_School for Social Work;Summer Faculty - SSW_School for Social Work'),
 ('Burton Hall','','Biological Sciences','https://www.smith.edu/biological-sciences','','Feng Gao','fgao@smith.edu','Feng',1053660,'Gao','','fgao@smith.edu','Staff','',''),
+
+
+
+
 ('Bass Hall 415','413-585-3698','Psychology','https://www.smith.edu/psychology','','Randi Garcia','rgarcia@smith.edu','Randi',1210199,'Garcia','','rgarcia@smith.edu','Faculty','Randi','Assistant Professor_Psychology'),
 ('10 Prospect Street, 303','413-585-3584','Government','https://www.smith.edu/government','','Velma García','vgarcia@smith.edu','Velma',72054,'García','','vgarcia@smith.edu','Faculty','Velma','Professor_Government'),
 ('138 Elm Street, 4','413-585-3718','History','https://www.smith.edu/history','','Daniel Gardner','dgardner@smith.edu','Daniel',73721,'Gardner','','dgardner@smith.edu','Faculty','Daniel','DW Morrow Professor-History_History'),

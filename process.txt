@@ -1,0 +1,19 @@
+Process for Campus Directory
+
+1. convert json to SQL
+2. added building column to extract building name from campus address that is same as major building table (that we will later merge with) (ex: Ford Hall Rm 204 -> Ford Hall)
+3. adjust building names so they are the same w building name in building geom table
+4. leaflets - to show all data - use 2.0 (when 1.0, we lose information…)
+5.
+
+
+
+
+
+
+notes:
+
+henshaw vs 18 henshaw vs 20 henshaw
+47 Belmont
+hillyer art library vs art center
+green st classroom annex
