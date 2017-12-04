@@ -34,21 +34,26 @@ hi
     	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     		'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    	id: 'mapbox.streets',
-        format: 'image/png',
-        transparent: true
+    	id: 'mapbox.streets'
+        
     }).addTo(mymap);
-    var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wfs';
+
+    //http://discovery.ad.smith.edu:8080/geoserver/Campus/wms?service=WMS&version=1.1.0&request=GetMap&layers=Campus:directorygeom&styles=&bbox=-72.6430130004883,42.3126411437988,-72.6349258422852,42.321590423584&width=694&height=768&srs=EPSG:4326&format=application/openlayers
+    var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
     var defaultParameters = {
         service : 'WFS',
         version : '2.0',
-        request : 'GetFeature',
-        typeName : 'directorygeom',//'CampusDirectoryGeom:directorygeom1',
+        request : 'GetFeature',//'GetFeature',
+        typeName : 'directorygeomcenter',//get polygon -> points
+        //'CampusDirectoryGeom:directorygeom1',
         maxFeatures: 200,
+        // type: polygon,
+        format: 'image/png',
+        transparent: true,
         outputFormat : 'text/javascript',
         format_options : 'callback:getJson',
         SrsName : 'EPSG:4326',
-        cql_filter: "first_name='Joseph'"
+        // cql_filter: "first_name='Joseph'"
     };
     var parameters = L.Util.extend(defaultParameters);
     var URL = rootUrl + L.Util.getParamString(parameters);
