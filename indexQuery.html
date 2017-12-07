@@ -1,33 +1,40 @@
-<!-- Kalynn Kosyka -->
+<!-- Kalynn Kosyka 
+indexQuery
+Allow the user to query on the name of the staff member and/or department the staff member is associated to
+
+TODO
+use dropdown for department? -> many departments... maybe dropdown for academic and type for other...
+-->
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>QUERY FOR SMITH CAMPUS DIRECTORY</title>
+<title>QUERY FOR SMITH CAMPUS DIRECTORY</title>
 </head>
 <body>
-	<h1 style="text-align: center;">QUERY FOR SMITH CAMPUS DIRECTORY</h1>
-	<!-- HTML for SEARCH BAR -->
-	<div id="tfheader" style="text-align: center;">
-		<form id="tfnewsearch" method="get" action="CampusDirectoryMap.html">
-			NAME
-			<br/>
-			<input type="text"  name="name" maxlength="120" style="font-size: 25px;">
-			<br/><br/>
-			DEPARTMENT
-			<br/>
-			<input type="text" name="dept"  maxlength="120" style="font-size: 25px;">
-			<!-- <select name="dept">
-				<option value="">Select Department</option>
-				<option value="volvo">Volvo</option>
-				<option value="saab">Saab</option>
-				<option value="opel">Opel</option>
-				<option value="audi">Audi</option>
-			</select> -->
-			<br/>
-			<input type="submit" value="search" class="search">
-		</form>
-	</div>
+<h1 style="text-align: center;">QUERY FOR SMITH CAMPUS DIRECTORY</h1>
+<!-- HTML for SEARCH BAR -->
+<div id="tfheader" style="text-align: center;">
+<form id="tfnewsearch" method="get" action="CampusDirectoryMap.html">
+NAME
+<br/>
+<input type="text"  name="name" maxlength="120" style="font-size: 25px;">
+<br/><br/>
+DEPARTMENT
+<br/>
+<input type="text" name="dept"  maxlength="120" style="font-size: 25px;">
+<!-- if dropdown option is wanted for department
+<select name="dept">
+<option value="">Select Department</option>
+<option value="volvo">Volvo</option>
+<option value="saab">Saab</option>
+<option value="opel">Opel</option>
+<option value="audi">Audi</option>
+</select> -->
+<br/>
+<input type="submit" value="search" class="search">
+</form>
+</div>
 </body>
 </html>
 

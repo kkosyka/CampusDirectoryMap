@@ -1,5 +1,11 @@
-<!-- Kalynn Kosyka -->
+<!-- Kalynn Kosyka 
+Campus Directory Map
+After querying, visualization of geom points that satisyfy query based on the Smith College Directory.
+In addtion, results displayed at the bottom where user can pick specific professor/staff member
 
+TODO
+be able to filter on multiple departments? -> use of lists, loop, and create list in appropriate regex format
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +29,6 @@
             <p id="listResults">No Results.</p>
         </ul>
     </div>
-
 </body>
 <script>
 
@@ -37,8 +42,6 @@
 
     }).addTo(mymap);
 
-    //http://discovery.ad.smith.edu:8080/geoserver/Campus/wms?service=WMS&version=1.1.0&request=GetMap&layers=Campus:directorygeom&styles=&bbox=-72.6430130004883,42.3126411437988,-72.6349258422852,42.321590423584&width=694&height=768&srs=EPSG:4326&format=application/openlayers
-
     var values = window.location.href.split("?")[1].split("&");
     var displayNameSearch = values[0].split("=")[1].replace("%20", " ").replace("+", " ").toLowerCase();
     var deptAggSearch = values[1].split("=")[1];
@@ -46,23 +49,19 @@
     console.log(displayNameSearch + " " + deptAggSearch);
 
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
-    var defaultParameters = {
+    var defaultParameters = { //see if one can define geom column...
         service : 'WFS',
         version : '2.0',
-        request : 'GetFeature',//'GetFeature',
+        request : 'GetFeature',
         typeName : 'directoryCenter:directorygeomcenter',
         maxFeatures: 200,
-        // type: polygon?,
         format: 'image/png',
         transparent: true,
         outputFormat : 'text/javascript',
         format_options : 'callback:getJson',
         SrsName : 'EPSG:4326',
         cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
-
-        // "strToLowerCase(first_name) LIKE '%"+firstNameSearch+"%' AND strToLowerCase(last_name) LIKE '%"+lastNameSearch+"%' AND strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
     };
-
 
     var results = [];
     var parameters = L.Util.extend(defaultParameters);
@@ -88,8 +87,8 @@
         pointToLayer: function(feature, latlng){
             return new L.CircleMarker(latlng ,{
                 radius: 2,
-                // fillColor: "#A3C990",
-                // color: "#FF0000",
+                fillColor: "#A3C990", //TODO figure out color...
+                color: "#FF0000",
                 weight: 1,
                 opacity: 1,
                 fillOpacity: 1
@@ -136,4 +135,8 @@ create table directoryGeom as
 public.campusdirectory1 directory
 left outer join public."CampusBuildings" building on
 (directory.building = building.building_name))
+
+// "strToLowerCase(first_name) LIKE '%"+firstNameSearch+"%' AND strToLowerCase(last_name) LIKE '%"+lastNameSearch+"%' AND strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
+
+
 -->
