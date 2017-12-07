@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Campus Directory</title>
+    <title>SMITH CAMPUS DIRECTORY</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
@@ -38,9 +38,9 @@
     //http://discovery.ad.smith.edu:8080/geoserver/Campus/wms?service=WMS&version=1.1.0&request=GetMap&layers=Campus:directorygeom&styles=&bbox=-72.6430130004883,42.3126411437988,-72.6349258422852,42.321590423584&width=694&height=768&srs=EPSG:4326&format=application/openlayers
 
     var values = window.location.href.split("?")[1].split("&");
-    var displayNameSearch = values[0].split("=")[1];
-    var deptAggSearch = values[1].split("=")[1];;
-
+    var displayNameSearch = values[0].split("=")[1].replace("%20", " ").replace("+", " ").toLowerCase();
+    var deptAggSearch = values[1].split("=")[1];
+    console.log(values);
     console.log(displayNameSearch + " " + deptAggSearch);
 
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
@@ -63,7 +63,6 @@
 
 
     var results = [];
-
     var parameters = L.Util.extend(defaultParameters);
     var URL = rootUrl + L.Util.getParamString(parameters);
     var count = 0;
@@ -97,8 +96,8 @@
         onEachFeature: function (feature, layer) {
             count++;
             popupOptions = {maxWidth: 500};
-            results.push("<div style='-webkit-column-break-inside: avoid;'><b>NAME: </b>" + feature.properties.display_name +
-                     "</br><b>ADDR: </b>" + feature.properties.campus_address +
+            results.push("<div style='-webkit-column-break-inside: avoid;'><b>NAME: </b><a href='CampusDirectoryMap.html?name="+feature.properties.display_name+"&dept='''>" + feature.properties.display_name +
+                     "</a></br><b>ADDR: </b>" + feature.properties.campus_address +
                       "</br><b>DEPT: </b>" + feature.properties.dept_agg + "</br></br></div>");
 
             layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address + "</br><b>Dept: </b>" + feature.properties.dept_agg,
@@ -107,14 +106,11 @@
 
         }).addTo(mymap);
             console.log(count);
-
             document.getElementById("countResults").innerHTML = count + " records found";
             console.log(results);
             document.getElementById("listResults").innerHTML = results.join(" ");
         }
     });
-
-
 
     function handleJson(data) {
         console.log(data);		
@@ -130,12 +126,7 @@
     }
 
 </script>
-
-
 </html>
-
-
-
 
 <!-- 
 create table directoryGeom as
@@ -143,17 +134,4 @@ create table directoryGeom as
 public.campusdirectory1 directory
 left outer join public."CampusBuildings" building on
 (directory.building = building.building_name))
-
-
-
-
-
-
-
-
-
-
-
-
-
 -->
