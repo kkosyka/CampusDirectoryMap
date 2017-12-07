@@ -1,60 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Campus Directory</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" /> -->
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <title>Campus Directory</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" /> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
+    <h1 style="text-align: center";>SMITH CAMPUS DIRECTORY</h1>
+    <form action="indexQuery.html">
+        <button>New Query</button>
+    </form></br>
+    <div id="mapid" style="width: 100%; height: 600px;"></div>
+    <h2 style="text-align: center";>RESULTS</h2>
+        <i><h3 style="text-align: center"; id="countResults"> 0 records found </h3></i>
+    <div ">
+        <ul style="-moz-column-count: 3; -webkit-column-count: 3; column-count: 3;">
+            <p id="listResults">No Results.</p>
+        </ul>
+    </div>
 
-<h1>Smith Directory</h1>
-hi
-<!-- 
-<form onsubmit="myFunction()">
-  Enter name: <input type="text" id="textbox" name="fname">
-  <input type="submit" value="Submit">
-</form>
- -->
-<div id="mapid" style="width: 1200px; height: 700px;"></div>
+    <!-- column-count: 3 -->
+</body>
 <script>
-    // var searchVal = "Heather Zottoli";
-    // function myFunction() {
-    //     alert("The form was submitted");
-    //     searchVal = document.getElementById("textbox").value;
-    // }
-
 
     var mymap = L.map('mapid').setView([42.318088, -72.638125], 16);
     L.tileLayer.wms('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-    	maxZoom: 18,
-    	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    		'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    	id: 'mapbox.streets'
-        
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: 'mapbox.streets'
+
     }).addTo(mymap);
 
     //http://discovery.ad.smith.edu:8080/geoserver/Campus/wms?service=WMS&version=1.1.0&request=GetMap&layers=Campus:directorygeom&styles=&bbox=-72.6430130004883,42.3126411437988,-72.6349258422852,42.321590423584&width=694&height=768&srs=EPSG:4326&format=application/openlayers
+
+    var values = window.location.href.split("?")[1].split("&");
+    var displayNameSearch = values[0].split("=")[1];
+    var deptAggSearch = values[1].split("=")[1];;
+
+    console.log(displayNameSearch + " " + deptAggSearch);
+
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
     var defaultParameters = {
         service : 'WFS',
         version : '2.0',
         request : 'GetFeature',//'GetFeature',
-        // typeName : 'CampusDirectoryGeom:directorygeom',//get polygon -> points
         typeName : 'directoryCenter:directorygeomcenter',
         maxFeatures: 200,
-        // type: polygon,
+        // type: polygon?,
         format: 'image/png',
         transparent: true,
         outputFormat : 'text/javascript',
         format_options : 'callback:getJson',
         SrsName : 'EPSG:4326',
-        // cql_filter: "first_name='Joseph'"
+        cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
+
+        // "strToLowerCase(first_name) LIKE '%"+firstNameSearch+"%' AND strToLowerCase(last_name) LIKE '%"+lastNameSearch+"%' AND strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
     };
+
+
+    var results = [];
+
     var parameters = L.Util.extend(defaultParameters);
     var URL = rootUrl + L.Util.getParamString(parameters);
     var count = 0;
@@ -64,48 +75,87 @@ hi
         dataType : 'JSONP',
         jsonpCallback : 'getJson',
         success : function (response) {
-            WFSLayer = L.geoJson(response, {
-                style: function (feature) {
-                    return {
-                        fillColor: 'FFFFFF',
-                        fillOpacity: 0,
-                        color: '#ff7800',
-                        weight: 5,
-                        opacity: 1
-                    };
+        WFSLayer = L.geoJson(response, {
+        style: function (feature) {
+            return {
+                fillColor: 'FFFFFF',
+                fillOpacity: 0,
+                color: '#ff7800',
+                weight: 5,
+                opacity: 1
+            };
+        },
+        //create points instead of drop pins
+        pointToLayer: function(feature, latlng){
+            return new L.CircleMarker(latlng ,{
+                radius: 2,
+                // fillColor: "#A3C990",
+                // color: "#FF0000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 1
+            });
+        },
+        onEachFeature: function (feature, layer) {
+            count++;
+            popupOptions = {maxWidth: 500};
+            results.push("<div style='-webkit-column-break-inside: avoid;'><b>NAME: </b>" + feature.properties.display_name +
+                     "</br><b>ADDR: </b>" + feature.properties.campus_address +
+                      "</br><b>DEPT: </b>" + feature.properties.dept_agg + "</br></br></div>");
 
-                },
-                
-                onEachFeature: function (feature, layer) {
-                	count++;
-                	// console.log(feature.properties.first_name == "Barbara");
-                		// console.log(feature.properties.display_name);
-                    popupOptions = {maxWidth: 500};
-                
-                    layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address,
-                    popupOptions);
-                }
-            }).addTo(mymap);
+            layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address + "</br><b>Dept: </b>" + feature.properties.dept_agg,
+            popupOptions);
+            }
+
+        }).addTo(mymap);
             console.log(count);
 
+            document.getElementById("countResults").innerHTML = count + " records found";
+            console.log(results);
+            document.getElementById("listResults").innerHTML = results.join(" ");
         }
-
     });
-    			function handleJson(data) {
-    				console.log(data);		
-    			var myStyle = {
-    				"color": "#ff7800",
-    				"weight": 5,
-    				"opacity": 1,
 
-    				onEachFeature: onEachFeature // allows you to access individual buildings (i.e. for popups)
-    			};
-    			var mylayer = L.geoJson(data).addTo(mymap, myStyle);
 
-    		}
+
+    function handleJson(data) {
+        console.log(data);		
+        var myStyle = {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 1,
+            onEachFeature: onEachFeature // allows you to access individual buildings (i.e. for popups)
+        };
+
+        var mylayer = L.geoJson(data).addTo(mymap, myStyle);
+
+    }
+
 </script>
 
 
-
-</body>
 </html>
+
+
+
+
+<!-- 
+create table directoryGeom as
+(select * from
+public.campusdirectory1 directory
+left outer join public."CampusBuildings" building on
+(directory.building = building.building_name))
+
+
+
+
+
+
+
+
+
+
+
+
+
+-->
