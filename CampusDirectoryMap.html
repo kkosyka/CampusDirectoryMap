@@ -44,23 +44,37 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
 
     var values = window.location.href.split("?")[1].split("&");
     var displayNameSearch = values[0].split("=")[1].replace("%20", " ").replace("+", " ").toLowerCase();
-    var deptAggSearch = values[1].split("=")[1];
-    console.log(values);
-    console.log(displayNameSearch + " " + deptAggSearch);
+    var deptAggSearch = values[1].split("=")[1].toLowerCase();
+    var personTypeAggSearch = [];
+    var count = 0;
+    for(var i = 2; i< 5; i++){
+        if(values[i]!= null){
+            count++;
+            console.log(values[i].split("=")[1])
+            personTypeAggSearch.push("'" + values[i].split("=")[1] + "'")
+        }
+    }
+    if(count ==0){
+        personTypeAggSearch.push("'Faculty'", "'Student'", "'Staff'");
+    }
+    
+    personTypeAggSearch = personTypeAggSearch.join(",");
+
+    console.log(displayNameSearch + " " + deptAggSearch + " " + personTypeAggSearch);
 
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
     var defaultParameters = { //see if one can define geom column...
         service : 'WFS',
-        version : '2.0',
+        version : '2.11',
         request : 'GetFeature',
-        typeName : 'directoryCenter:directorygeomcenter',
+        typeName : 'SmithDirectoryGeomCenter:campusdirectorygeomcenter',
         maxFeatures: 200,
         format: 'image/png',
         transparent: true,
         outputFormat : 'text/javascript',
         format_options : 'callback:getJson',
         SrsName : 'EPSG:4326',
-        cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
+        cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%' AND person_type_agg in ("+personTypeAggSearch +")"
     };
 
     var results = [];
@@ -99,9 +113,10 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
             popupOptions = {maxWidth: 500};
             results.push("<div style='-webkit-column-break-inside: avoid;'><b>NAME: </b><a href='CampusDirectoryMap.html?name="+feature.properties.display_name+"&dept='''>" + feature.properties.display_name +
                      "</a></br><b>ADDR: </b>" + feature.properties.campus_address +
-                      "</br><b>DEPT: </b>" + feature.properties.dept_agg + "</br></br></div>");
+                      "</br><b>DEPT: </b>" + feature.properties.dept_agg +
+                      "</br><b>TYPE: </b>" + feature.properties.person_type_agg + "</br></br></div>");
 
-            layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address + "</br><b>Dept: </b>" + feature.properties.dept_agg,
+            layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address + "</br><b>Dept: </b>" + feature.properties.dept_agg+ "</br><b>" + feature.properties.person_type_agg + "</b>",
             popupOptions);
             }
 
@@ -137,6 +152,67 @@ left outer join public."CampusBuildings" building on
 (directory.building = building.building_name))
 
 // "strToLowerCase(first_name) LIKE '%"+firstNameSearch+"%' AND strToLowerCase(last_name) LIKE '%"+lastNameSearch+"%' AND strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
+
+
+
+SELECT  *
+    FROM public.test as t1
+    left join public."CampusBuildings" as t2 on t1.building = t2.building_name
+    where dept_agg like '%Admissi%'
+;
+
+
+create table CampusDirectoryGeomCenter as
+(SELECT  t1.campus_address, t1.campus_extension, t1.dept_agg, t1.dept_url_agg, t1.display_class_year, t1.display_name, t1.email, t1.first_name, t1.image_id, t1.last_name, t1.mailbox,t1.node_indentifier, t1.person_type_agg, t1.pref_first, t1.title_dept, t1.building, t2.geom_center, t1.building_area
+    FROM public.test as t1
+    left join public."CampusBuildings" as t2 on t1.building = t2.building_name)
+;
+
+TODO
+-those without geoms aren't in results at all...
+-NEED
+Henshaw B2 101
+47 Belmont Avenue, Rm 301
+Henshaw C1 202
+Mount Holyoke College
+18 Henshaw B3 203
+Henshaw C2 204
+42 Green Street
+Five College Library Annex
+Green Street Classroom Annex, Rm 104A
+7 College Lane
+Five College Library Annex
+Hilliyer Art Library
+Hillyer Art Library, 123
+42 Green Street
+Green Street, Classroom Annex 208
+123 Elm Street
+47 Belmont Avenue, Rm 203
+Clark Science Center
+Henshaw B1 104
+21 Henshaw Ave
+8 Paradise Road
+33 Elm Street
+Compliance and Risk Management
+8 Paradise Road
+33 Elm Street
+126  West Street
+18 Henshaw, B3101
+8 Paradise Road
+Facilities Management
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -->
