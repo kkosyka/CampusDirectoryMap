@@ -62,6 +62,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
 
     console.log(displayNameSearch + " " + deptAggSearch + " " + personTypeAggSearch);
 
+    var building = 'mcc';
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
     var defaultParameters = { //see if one can define geom column...
         service : 'WFS',
@@ -74,7 +75,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
         outputFormat : 'text/javascript',
         format_options : 'callback:getJson',
         SrsName : 'EPSG:4326',
-        cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%' AND person_type_agg in ("+personTypeAggSearch +")"
+        cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%' AND strToLowerCase(campus_address) LIKE '%"+building+"%' AND person_type_agg in ("+personTypeAggSearch +")"
     };
 
     var results = [];
@@ -202,6 +203,7 @@ Compliance and Risk Management
 Facilities Management
 
 
+find eric jensen
 
 
 -->
