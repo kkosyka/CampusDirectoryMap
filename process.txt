@@ -1,5 +1,5 @@
 Process for Campus Directory
-
+postgres - smithgis
 1. convert json to SQL
 2. added building column to extract building name from campus address that is same as major building table (that we will later merge with) (ex: Ford Hall Rm 204 -> Ford Hall)
 3. adjust building names so they are the same w building name in building geom table

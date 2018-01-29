@@ -46,6 +46,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
     var displayNameSearch = values[0].split("=")[1].replace("%20", " ").replace("+", " ").toLowerCase();
     var deptAggSearch = values[1].split("=")[1].toLowerCase();
     var personTypeAggSearch = [];
+    var building = "";
     var count = 0;
     for(var i = 2; i< 5; i++){
         if(values[i]!= null){
@@ -59,16 +60,12 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
     }
     
     personTypeAggSearch = personTypeAggSearch.join(",");
-
-    console.log(displayNameSearch + " " + deptAggSearch + " " + personTypeAggSearch);
-
-    var building = 'mcc';
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wms';
     var defaultParameters = { //see if one can define geom column...
         service : 'WFS',
-        version : '2.11',
+        version : '2.0',
         request : 'GetFeature',
-        typeName : 'SmithDirectoryGeomCenter:campusdirectorygeomcenter',
+        typeName : 'SmithDirectoryJan:CampusDirectory',//'SmithDirectoryGeomCenter:campusdirectorygeomcenter',
         maxFeatures: 200,
         format: 'image/png',
         transparent: true,
@@ -77,7 +74,6 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
         SrsName : 'EPSG:4326',
         cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%' AND strToLowerCase(campus_address) LIKE '%"+building+"%' AND person_type_agg in ("+personTypeAggSearch +")"
     };
-
     var results = [];
     var parameters = L.Util.extend(defaultParameters);
     var URL = rootUrl + L.Util.getParamString(parameters);
@@ -137,11 +133,8 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
             "opacity": 1,
             onEachFeature: onEachFeature // allows you to access individual buildings (i.e. for popups)
         };
-
         var mylayer = L.geoJson(data).addTo(mymap, myStyle);
-
     }
-
 </script>
 </html>
 
@@ -205,5 +198,8 @@ Facilities Management
 
 find eric jensen
 
+INSERT INTO public."CampusBuildings" (geom_center, building_name)
+SELECT geom, buildingna
+FROM public.missing_geoms_2017;
 
 -->

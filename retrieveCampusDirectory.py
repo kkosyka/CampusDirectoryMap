@@ -381,6 +381,63 @@ UPDATE public."CampusDirectory" SET
     18 Henshaw
     Henshaw
 
+public."CampusDirectory" as directory
+left outer join public."CampusBuildings" as buildings
+on directory.building = buildings.building_name
+where directory.building is not null AND directory.geom_center is null
+
+
+
+
+jan 28,2018
+
+example karen kristof 7colelge - 0104000020E6100000010000000101000000E90F6A12FE2852C00BF106A0EA284540
+select campus_address, display_name, building, geom_center, geom_cent, building_name from
+public."CampusDirectory" as directory
+left outer join public."CampusBuildings" as buildings
+on directory.building = buildings.building_name
+
+
+update public."CampusDirectory" directory
+set geom_center = p.geom_cent
+from
+(select * from
+public."CampusDirectory" as directory
+left outer join public."CampusBuildings" as buildings
+on directory.building = buildings.building_name) p
+where directory.building = p.building_name
+
+
+to check missing geoms:
+SELECT campus_address, dept_agg, display_name, building, building_room, geom_center
+    FROM public."CampusDirectory"
+    WHERE building IS NOT NULL AND geom_center IS NULL;
+
+
+results of missing so far...    
+Fine Arts Center, Tryon 223C
+Fine Arts Center, Gallery
+#18  Henshaw vs 18 Henshaw
+#47  Belmont Avenue v 47 Belmont Ave
+#Five College Library Annex v Five College Library v Five College Annex
+#Green Street  Classroom Annex v Green Street Classroom Annex
+#21 Henshaw Ave v 21 Henshaw
+Clark Hall v Clark  Hall
+to fix:
+update public."CampusDirectory"
+set building = 'Clark Hall'
+WHERE building like '%Clark  Hall%'
+    AND geom_center IS NULL;
+
+to update and merge w geoms (ran after fixing edits to get geom_center for directory members):
+update public."CampusDirectory" directory
+set geom_center = p.geom_cent
+from
+(select * from
+public."CampusDirectory" as directory
+left outer join public."CampusBuildings" as buildings
+on directory.building = buildings.building_name) p
+where directory.building = p.building_name
 
 
 '''
