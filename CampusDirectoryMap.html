@@ -58,6 +58,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
     }
     if(count ==0){
         // personTypeAggSearch.push("'Faculty'", "'Student'", "'Staff'";
+        //db has specific values in person stype
         personTypeAggSearch.push("'Student  Staff'", "'Staff'", "'Student Faculty Staff'", "'Student Faculty'", "'Faculty'", "'Faculty Staff'");
     }
     personTypeAggSearch = personTypeAggSearch.join(",");
@@ -141,32 +142,28 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
 </script>
 </html>
 
-
-
-
 <!-- 
+
 create table directoryGeom as
 (select * from
 public.campusdirectory1 directory
 left outer join public."CampusBuildings" building on
 (directory.building = building.building_name))
-
 // "strToLowerCase(first_name) LIKE '%"+firstNameSearch+"%' AND strToLowerCase(last_name) LIKE '%"+lastNameSearch+"%' AND strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%'"
-
-
 
 SELECT  *
     FROM public.test as t1
     left join public."CampusBuildings" as t2 on t1.building = t2.building_name
-    where dept_agg like '%Admissi%'
-;
-
+    where dept_agg like '%Admissi%';
 
 create table CampusDirectoryGeomCenter as
 (SELECT  t1.campus_address, t1.campus_extension, t1.dept_agg, t1.dept_url_agg, t1.display_class_year, t1.display_name, t1.email, t1.first_name, t1.image_id, t1.last_name, t1.mailbox,t1.node_indentifier, t1.person_type_agg, t1.pref_first, t1.title_dept, t1.building, t2.geom_center, t1.building_area
     FROM public.test as t1
     left join public."CampusBuildings" as t2 on t1.building = t2.building_name)
 ;
+
+
+
 
 
 -->
