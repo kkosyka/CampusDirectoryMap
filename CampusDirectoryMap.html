@@ -45,7 +45,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
     var values = window.location.href.split("?")[1].split("&");
     var building = "";
     var displayNameSearch = values[0].split("=")[1].replace("%20", " ").replace("+", " ").toLowerCase();
-    var deptAggSearch = values[1].split("=")[1].toLowerCase();
+    var deptAggSearch = values[1].split("=")[1].toLowerCase().replace("+"," ");
     var personTypeAggSearch = [];
 
     var count = 0;
