@@ -11,6 +11,8 @@ We hope in the near future to get this project embedded in Smith College's actua
 
 https://www.smith.edu/about-smith/campus-directory
 
+http://www.science.smith.edu/sal/2018/03/26/where-is-everybody-campus-directory-mapping/
+
 
 
 
