@@ -15,6 +15,10 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="LeafletMarkerCluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" type="text/css" href="LeafletMarkerCluster/dist/MarkerCluster.Default.css" />
+    <script type='text/javascript' src='LeafletMarkerCluster/dist/leaflet.markercluster-src.js'></script>
+    <script type='text/javascript' src='LeafletMarkerCluster/dist/leaflet.markercluster.js'></script>
 </head>
 <body style="text-align: center">
     <h1 style="text-align: center";>SMITH CAMPUS DIRECTORY</h1>
@@ -65,11 +69,11 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
 
     console.log(personTypeAggSearch);
     var rootUrl = 'http://discovery.ad.smith.edu:8080/geoserver/Campus/wfs';;
-    var defaultParameters = { //see if one can define geom column...
+    var defaultParameters = { 
         service : 'WFS',
-        version : '2.0', //2.0
+        version : '2.0', 
         request : 'GetFeature',
-        typeName : 'SmithDirectoryJan:CampusDirectory',//'SmithDirectoryGeomCenter:campusdirectorygeomcenter',
+        typeName : 'SmithDirectoryJan:CampusDirectory',
         maxFeatures: 1000000,
         format: 'image/png',
         transparent: true,
@@ -78,11 +82,18 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
         SrsName : 'EPSG:4326',
         cql_filter: "strToLowerCase(display_name) LIKE '%"+displayNameSearch+"%' AND strToLowerCase(dept_agg) LIKE '%"+deptAggSearch+"%' AND strToLowerCase(campus_address) LIKE '%"+building+"%' AND person_type_agg in ("+personTypeAggSearch +")"
     };
+    var markerClusters = L.markerClusterGroup();
     var results = [];
     var parameters = L.Util.extend(defaultParameters);
     var URL = rootUrl + L.Util.getParamString(parameters);
     var count = 0;
     var WFSLayer = null;
+    var myIcon = L.icon({
+
+      iconSize: [29, 24],
+      iconAnchor: [9, 21],
+      popupAnchor: [0, -14]
+    });
     var ajax =$.ajax({
         url : URL,
         dataType : 'JSONP',
@@ -102,7 +113,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
         pointToLayer: function(feature, latlng){
             return new L.CircleMarker(latlng ,{
                 radius: 2,
-                fillColor: "#A3C990", //TODO figure out color...
+                fillColor: "#A3C990", 
                 color: "#FF0000",
                 weight: 1,
                 opacity: 1,
@@ -119,6 +130,7 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
 
             layer.bindPopup("<b>Name: </b>" + feature.properties.display_name + "</br><b>Address: </b>"+ feature.properties.campus_address + "</br><b>Dept: </b>" + feature.properties.dept_agg+ "</br><b>" + feature.properties.person_type_agg + "</b>",
             popupOptions);
+            markerClusters.addLayer( layer );
             }
 
         }).addTo(mymap);
@@ -128,6 +140,8 @@ be able to filter on multiple departments? -> use of lists, loop, and create lis
             document.getElementById("listResults").innerHTML = results.join(" ");
         }
     });
+
+    mymap.addLayer( markerClusters );
 
     function handleJson(data) {
         console.log(data);		
